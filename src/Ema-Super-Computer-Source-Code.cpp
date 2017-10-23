@@ -17,17 +17,17 @@ int main()
 	int height;
 	int width;
 
-
-
 	cin >> height;
 	cin >> width;
 
-	int depthSet[height][width] = {};
+	int depthSet[height][width] =
+	{ };
 
 //	cout << height;
 //	cout << width;
 
-	bool grid[height][width] = {};
+	bool grid[height][width] =
+	{ };
 
 	for (int i = 0; i < height; i++)
 	{
@@ -48,9 +48,6 @@ int main()
 //		cout << endl;
 
 	}
-
-
-
 
 //	height = 6;
 //	width = 6;
@@ -94,40 +91,70 @@ int main()
 //		cout << endl;
 //	}
 
-	int max1I = 0, max1J = 0, max2I = 0, max2J = 0;
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			if (depthSet[i][j] > depthSet[max1I][max1J])
-			{
-				max1I = i;
-				max1J = j;
-			}
-		}
-	}
+	int solnSet[height][width] =
+	{ };
+	int solnKSet[height][width] =
+	{ };
+	int solnLSet[height][width] =
+	{ };
 
-//	cout << max1I << " " << max1J << endl;
-
-	for (int i = 0; i < height; i++)
+	for (int i = 1; i < height - 1; i++)
 	{
-		for (int j = 0; j < width; j++)
+		for (int j = 1; j < width - 1; j++)
 		{
-			if (depthSet[i][j] > depthSet[max2I][max2J] && (i != max1I || j != max1J))
+			int max2K = 0, max2L = 0;
+			for (int k = 1; k < height - 1; k++)
 			{
-				if( !(abs(max1I - i) <= depthSet[max1I][max1J] && abs(max1J - j) <= depthSet[max1I][max1J]) )
+				for (int l = 1; l < width - 1; l++)
 				{
-					max2I = i;
-					max2J = j;
+					if (depthSet[k][l] > depthSet[max2K][max2L]
+							&& (k != i || l != j))
+					{
+						if (!((abs(i - k) <= depthSet[i][j]
+								|| abs(i - k) <= depthSet[k][l])
+								&& (abs(j - l) <= depthSet[i][j]
+										|| abs(j - l) <= depthSet[k][l]))
+								&& !(i == k
+										&& abs(j - l)
+												<= depthSet[i][j]
+														+ depthSet[k][l])
+								&& !(j == l
+										&& abs(i - k)
+												<= depthSet[i][j]
+														+ depthSet[k][l]))
+						{
+							max2K = k;
+							max2L = l;
+						}
+					}
 				}
 			}
+			solnSet[i][j] = (4 * depthSet[i][j] + 1)
+					* (4 * depthSet[max2K][max2L] + 1);
+			solnKSet[i][j] = max2K;
+			solnLSet[i][j] = max2L;
 		}
 	}
 
-	cout << max1I << " " << max1J << " " << depthSet[max1I][max1J] << endl;
-	cout << max2I << " " << max2J << " " << depthSet[max2I][max2J] << endl;
+	int maxSoln = 0;
+	int solnI = 0, solnJ = 0;
+	for (int i = 1; i < height; i++)
+	{
+		for (int j = 1; j < width; j++)
+		{
+			if (solnSet[i][j] > maxSoln)
+			{
+				maxSoln = solnSet[i][j];
+				solnI = i;
+				solnJ = j;
+			}
+		}
+	}
 
-	cout << ((depthSet[max1I][max1J] * 4 + 1) * (depthSet[max2I][max2J] * 4 + 1));
+	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
+	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
+			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
+	cout << maxSoln;
 
 	return 0;
 }
