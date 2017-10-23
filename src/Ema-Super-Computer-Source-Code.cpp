@@ -115,7 +115,7 @@ int main()
 		{
 			if (depthSet[i][j] > depthSet[max2I][max2J] && (i != max1I || j != max1J))
 			{
-				if( !(abs(max1I - max2I) < depthSet[max1I][max1J] && abs(max1J - max2J) < depthSet[max1I][max1J]) )
+				if( !(abs(max1I - i) <= depthSet[max1I][max1J] && abs(max1J - j) <= depthSet[max1I][max1J]) )
 				{
 					max2I = i;
 					max2J = j;
@@ -124,7 +124,8 @@ int main()
 		}
 	}
 
-//	cout << max2I << " " << max2J << endl;
+	cout << max1I << " " << max1J << " " << depthSet[max1I][max1J] << endl;
+	cout << max2I << " " << max2J << " " << depthSet[max2I][max2J] << endl;
 
 	cout << ((depthSet[max1I][max1J] * 4 + 1) * (depthSet[max2I][max2J] * 4 + 1));
 
