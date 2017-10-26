@@ -159,9 +159,9 @@ int main()
 		}
 	}
 
-	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
-	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
-			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
+//	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
+//	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
+//			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
 	cout << maxSoln;
 
 	return 0;
