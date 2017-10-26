@@ -14,6 +14,7 @@ using namespace std;
 
 int main()
 {
+	cout << "brute force branch" << endl;
 	int height;
 	int width;
 
@@ -102,35 +103,42 @@ int main()
 	{
 		for (int j = 1; j < width - 1; j++)
 		{
-			int max2K = 0, max2L = 0;
-			for (int k = 1; k < height - 1; k++)
+			int max2K = 0, max2L = 0, bestDepth1 = 0, bestDepth2 = 0,
+					highestVal = 0;
+			for (int d1 = 1; d1 <= depthSet[i][j]; d1++)
 			{
-				for (int l = 1; l < width - 1; l++)
+				for (int k = 1; k < height - 1; k++)
 				{
-					if (depthSet[k][l] > depthSet[max2K][max2L]
-							&& (k != i || l != j))
+					for (int l = 1; l < width - 1; l++)
 					{
-						if (!((abs(i - k) <= depthSet[i][j]
-								|| abs(i - k) <= depthSet[k][l])
-								&& (abs(j - l) <= depthSet[i][j]
-										|| abs(j - l) <= depthSet[k][l]))
-								&& !(i == k
-										&& abs(j - l)
-												<= depthSet[i][j]
-														+ depthSet[k][l])
-								&& !(j == l
-										&& abs(i - k)
-												<= depthSet[i][j]
-														+ depthSet[k][l]))
+						for (int d2 = 1; d2 <= depthSet[k][l]; d2++)
 						{
-							max2K = k;
-							max2L = l;
+							if (k != i || l != j)
+							{
+								if (!((abs(i - k) <= d1 || abs(i - k) <= d2)
+										&& (abs(j - l) <= d1 || abs(j - l) <= d2))
+										&& !(i == k && abs(j - l) <= d1 + d2)
+										&& !(j == l && abs(i - k) <= d1 + d2))
+								{
+									if (((4 * d1) + 1) * ((4 * d2) + 1)
+											> highestVal)
+									{
+										highestVal = ((4 * d1) + 1)
+												* ((4 * d2) + 1);
+										max2K = k;
+										max2L = l;
+										bestDepth1 = d1;
+										bestDepth2 = d2;
+									}
+								}
+							}
 						}
+
 					}
 				}
 			}
-			solnSet[i][j] = (4 * depthSet[i][j] + 1)
-					* (4 * depthSet[max2K][max2L] + 1);
+			solnSet[i][j] = ((4 * bestDepth1) + 1)
+					* ((4 * bestDepth2) + 1);
 			solnKSet[i][j] = max2K;
 			solnLSet[i][j] = max2L;
 		}
