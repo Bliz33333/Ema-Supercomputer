@@ -12,22 +12,36 @@
 #include <algorithm>
 using namespace std;
 
+bool isIntersect(int y1, int x1, int depth1, int y2, int x2, int depth2)
+{
+	if((abs(x2 - x1) <= depth1 && abs(y2 - y1) <= depth2) || (abs(x2 - x1) <= depth2 && abs(y2 - y1) <= depth1))
+	{
+		return true;
+	}
+	if((y1 == y2 && abs(x1 - x2) <= depth1 + depth2) || (x1 == x2 && abs(y1 - y2) <= depth1 + depth2))
+	{
+		return true;
+	}
+	return false;
+}
+
 int main()
 {
+//	cout << "brute force branch" << endl;
 	int height;
 	int width;
-
-
 
 	cin >> height;
 	cin >> width;
 
-	int depthSet[height][width] = {};
+	int depthSet[height][width] =
+	{ };
 
 //	cout << height;
 //	cout << width;
 
-	bool grid[height][width] = {};
+	bool grid[height][width] =
+	{ };
 
 	for (int i = 0; i < height; i++)
 	{
@@ -48,9 +62,6 @@ int main()
 //		cout << endl;
 
 	}
-
-
-
 
 //	height = 6;
 //	width = 6;
@@ -94,40 +105,76 @@ int main()
 //		cout << endl;
 //	}
 
-	int max1I = 0, max1J = 0, max2I = 0, max2J = 0;
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			if (depthSet[i][j] > depthSet[max1I][max1J])
-			{
-				max1I = i;
-				max1J = j;
-			}
-		}
-	}
+	int solnSet[height][width] =
+	{ };
+	int solnKSet[height][width] =
+	{ };
+	int solnLSet[height][width] =
+	{ };
 
-//	cout << max1I << " " << max1J << endl;
-
-	for (int i = 0; i < height; i++)
+	for (int i = 1; i < height - 1; i++)
 	{
-		for (int j = 0; j < width; j++)
+		for (int j = 1; j < width - 1; j++)
 		{
-			if (depthSet[i][j] > depthSet[max2I][max2J] && (i != max1I || j != max1J))
+			int max2K = 0, max2L = 0, bestDepth1 = 0, bestDepth2 = 0,
+					highestVal = 0;
+			for (int d1 = 0; d1 <= depthSet[i][j]; d1++)
 			{
-				if( !(abs(max1I - i) <= depthSet[max1I][max1J] && abs(max1J - j) <= depthSet[max1I][max1J]) )
+				for (int k = 1; k < height - 1; k++)
 				{
-					max2I = i;
-					max2J = j;
+					for (int l = 1; l < width - 1; l++)
+					{
+						for (int d2 = 0; d2 <= depthSet[k][l]; d2++)
+						{
+							if (k != i || l != j)
+							{
+								if (!(isIntersect(i,j,d1,k,l,d2)))
+								{
+									if (((4 * d1) + 1) * ((4 * d2) + 1)
+											> highestVal)
+									{
+										highestVal = ((4 * d1) + 1)
+												* ((4 * d2) + 1);
+										max2K = k;
+										max2L = l;
+										bestDepth1 = d1;
+										bestDepth2 = d2;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
+			solnSet[i][j] = ((4 * bestDepth1) + 1)
+					* ((4 * bestDepth2) + 1);
+			solnKSet[i][j] = max2K;
+			solnLSet[i][j] = max2L;
 		}
 	}
 
-	cout << max1I << " " << max1J << " " << depthSet[max1I][max1J] << endl;
-	cout << max2I << " " << max2J << " " << depthSet[max2I][max2J] << endl;
+	int maxSoln = 0;
+	int solnI = 0, solnJ = 0;
+	for (int i = 1; i < height; i++)
+	{
+		for (int j = 1; j < width; j++)
+		{
+			if (solnSet[i][j] > maxSoln)
+			{
+				maxSoln = solnSet[i][j];
+				solnI = i;
+				solnJ = j;
+			}
+		}
+	}
 
-	cout << ((depthSet[max1I][max1J] * 4 + 1) * (depthSet[max2I][max2J] * 4 + 1));
+	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
+	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
+			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
+	cout << maxSoln;
+//	cout << endl << solnSet[1][8] << endl << depthSet[5][5];
 
 	return 0;
 }
+
+
