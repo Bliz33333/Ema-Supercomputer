@@ -12,6 +12,19 @@
 #include <algorithm>
 using namespace std;
 
+bool isIntersect(int y1, int x1, int depth1, int y2, int x2, int depth2)
+{
+	if((abs(x2 - x1) <= depth1 && abs(y2 - y1) <= depth2) || (abs(x2 - x1) <= depth2 && abs(y2 - y1) <= depth1))
+	{
+		return true;
+	}
+	if((y1 == y2 && abs(x1 - x2) <= depth1 + depth2) || (x1 == x2 && abs(y1 - y2) <= depth1 + depth2))
+	{
+		return true;
+	}
+	return false;
+}
+
 int main()
 {
 //	cout << "brute force branch" << endl;
@@ -115,10 +128,7 @@ int main()
 						{
 							if (k != i || l != j)
 							{
-								if (!((abs(i - k) <= d1 || abs(i - k) <= d2)
-										&& (abs(j - l) <= d1 || abs(j - l) <= d2))
-										&& !(i == k && abs(j - l) <= d1 + d2)
-										&& !(j == l && abs(i - k) <= d1 + d2))
+								if (!(isIntersect(i,j,d1,k,l,d2)))
 								{
 									if (((4 * d1) + 1) * ((4 * d2) + 1)
 											> highestVal)
@@ -133,7 +143,6 @@ int main()
 								}
 							}
 						}
-
 					}
 				}
 			}
@@ -163,7 +172,9 @@ int main()
 	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
 			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
 	cout << maxSoln;
-	cout << endl << solnSet[5][5];
+//	cout << endl << solnSet[1][8] << endl << depthSet[5][5];
 
 	return 0;
 }
+
+
