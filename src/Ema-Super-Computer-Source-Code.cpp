@@ -14,7 +14,7 @@ using namespace std;
 
 int main()
 {
-	cout << "brute force branch" << endl;
+//	cout << "brute force branch" << endl;
 	int height;
 	int width;
 
@@ -105,13 +105,13 @@ int main()
 		{
 			int max2K = 0, max2L = 0, bestDepth1 = 0, bestDepth2 = 0,
 					highestVal = 0;
-			for (int d1 = 1; d1 <= depthSet[i][j]; d1++)
+			for (int d1 = 0; d1 <= depthSet[i][j]; d1++)
 			{
 				for (int k = 1; k < height - 1; k++)
 				{
 					for (int l = 1; l < width - 1; l++)
 					{
-						for (int d2 = 1; d2 <= depthSet[k][l]; d2++)
+						for (int d2 = 0; d2 <= depthSet[k][l]; d2++)
 						{
 							if (k != i || l != j)
 							{
@@ -159,10 +159,11 @@ int main()
 		}
 	}
 
-//	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
-//	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
-//			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
+	cout << solnI << " " << solnJ << " " << depthSet[solnI][solnJ] << endl;
+	cout << solnKSet[solnI][solnJ] << " " << solnLSet[solnI][solnJ] << " "
+			<< depthSet[solnKSet[solnI][solnJ]][solnLSet[solnI][solnJ]] << endl;
 	cout << maxSoln;
+	cout << endl << solnSet[5][5];
 
 	return 0;
 }
